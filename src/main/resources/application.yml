@@ -73,15 +73,15 @@ spring:
         #useGlobalDataSourceStat: true
         #default-auto-commit: true \u9ED8\u8BA4
         #default-auto-commit: false
-#  jta:
-#    atomikos:
-#      datasource:
-#        max-pool-size: 20
-#        borrow-connection-timeout: 60
-#      connectionfactory:
-#        max-pool-size: 20
-#        borrow-connection-timeout: 60
-#    jpa:
-#      hibernate:
-#        ddl-auto: update
-#      show-sql: true
+  jta:
+    atomikos:
+      datasource:
+        max-pool-size: 20
+        borrow-connection-timeout: 60
+      connectionfactory:
+        max-pool-size: 20
+        borrow-connection-timeout: 60
+    jpa:
+      hibernate:
+        ddl-auto: update
+      show-sql: true
