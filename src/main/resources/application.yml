@@ -1,0 +1,87 @@
+spring:
+  datasource:
+    druid:
+      sid:  #\u6570\u636E\u6E901
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/manydatasource1?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: mysqladmin
+        #\u521D\u59CB\u5316\u65F6\u5EFA\u7ACB\u7269\u7406\u8FDE\u63A5\u7684\u4E2A\u6570
+        initialSize: 1
+        #\u6C60\u4E2D\u6700\u5927\u8FDE\u63A5\u6570
+        maxActive: 20
+        #\u6700\u5C0F\u7A7A\u95F2\u8FDE\u63A5
+        minIdle: 1
+        #\u83B7\u53D6\u8FDE\u63A5\u65F6\u6700\u5927\u7B49\u5F85\u65F6\u95F4\uFF0C\u5355\u4F4D\u6BEB\u79D2
+        maxWait: 60000
+        #\u6709\u4E24\u4E2A\u542B\u4E49\uFF1A
+        #1) Destroy\u7EBF\u7A0B\u4F1A\u68C0\u6D4B\u8FDE\u63A5\u7684\u95F4\u9694\u65F6\u95F4\uFF0C\u5982\u679C\u8FDE\u63A5\u7A7A\u95F2\u65F6\u95F4\u5927\u4E8E\u7B49\u4E8EminEvictableIdleTimeMillis\u5219\u5173\u95ED\u7269\u7406\u8FDE\u63A5\u3002
+        #2) testWhileIdle\u7684\u5224\u65AD\u4F9D\u636E\uFF0C\u8BE6\u7EC6\u770BtestWhileIdle\u5C5E\u6027\u7684\u8BF4\u660E
+        timeBetweenEvictionRunsMillis: 60000
+        #\u8FDE\u63A5\u4FDD\u6301\u7A7A\u95F2\u800C\u4E0D\u88AB\u9A71\u9010\u7684\u6700\u5C0F\u65F6\u95F4\uFF0C\u5355\u4F4D\u662F\u6BEB\u79D2
+        minEvictableIdleTimeMillis: 300000
+        #\u4F7F\u7528\u8BE5SQL\u8BED\u53E5\u68C0\u67E5\u94FE\u63A5\u662F\u5426\u53EF\u7528\u3002\u5982\u679CvalidationQuery=null\uFF0CtestOnBorrow\u3001testOnReturn\u3001testWhileIdle\u90FD\u4E0D\u4F1A\u8D77\u4F5C\u7528\u3002
+        validationQuery: SELECT 1 FROM DUAL
+        #\u5EFA\u8BAE\u914D\u7F6E\u4E3Atrue\uFF0C\u4E0D\u5F71\u54CD\u6027\u80FD\uFF0C\u5E76\u4E14\u4FDD\u8BC1\u5B89\u5168\u6027\u3002\u7533\u8BF7\u8FDE\u63A5\u7684\u65F6\u5019\u68C0\u6D4B\uFF0C\u5982\u679C\u7A7A\u95F2\u65F6\u95F4\u5927\u4E8EtimeBetweenEvictionRunsMillis\uFF0C\u6267\u884CvalidationQuery\u68C0\u6D4B\u8FDE\u63A5\u662F\u5426\u6709\u6548\u3002
+        testWhileIdle: true
+        #\u7533\u8BF7\u8FDE\u63A5\u65F6\u6267\u884CvalidationQuery\u68C0\u6D4B\u8FDE\u63A5\u662F\u5426\u6709\u6548\uFF0C\u505A\u4E86\u8FD9\u4E2A\u914D\u7F6E\u4F1A\u964D\u4F4E\u6027\u80FD\u3002
+        testOnBorrow: false
+        #\u5F52\u8FD8\u8FDE\u63A5\u65F6\u6267\u884CvalidationQuery\u68C0\u6D4B\u8FDE\u63A5\u662F\u5426\u6709\u6548\uFF0C\u505A\u4E86\u8FD9\u4E2A\u914D\u7F6E\u4F1A\u964D\u4F4E\u6027\u80FD\u3002
+        testOnReturn: false
+        # \u914D\u7F6E\u76D1\u63A7\u7EDF\u8BA1\u62E6\u622A\u7684filters\uFF0C\u53BB\u6389\u540E\u76D1\u63A7\u754C\u9762sql\u65E0\u6CD5\u7EDF\u8BA1\uFF0C'wall'\u7528\u4E8E\u9632\u706B\u5899
+        filters: stat,wall,slf4j
+        # \u901A\u8FC7connectProperties\u5C5E\u6027\u6765\u6253\u5F00mergeSql\u529F\u80FD\uFF1B\u6162SQL\u8BB0\u5F55
+        #connectionProperties.druid.stat.mergeSql: true
+        #connectionProperties.druid.stat.slowSqlMillis: 5000
+        # \u5408\u5E76\u591A\u4E2ADruidDataSource\u7684\u76D1\u63A7\u6570\u636E
+        #useGlobalDataSourceStat: true
+        #default-auto-commit: true \u9ED8\u8BA4
+        #default-auto-commit: false
+      lee: #\u6570\u636E\u6E902
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/manydatasource2?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: mysqladmin
+        #\u521D\u59CB\u5316\u65F6\u5EFA\u7ACB\u7269\u7406\u8FDE\u63A5\u7684\u4E2A\u6570
+        initialSize: 1
+        #\u6C60\u4E2D\u6700\u5927\u8FDE\u63A5\u6570
+        maxActive: 20
+        #\u6700\u5C0F\u7A7A\u95F2\u8FDE\u63A5
+        minIdle: 1
+        #\u83B7\u53D6\u8FDE\u63A5\u65F6\u6700\u5927\u7B49\u5F85\u65F6\u95F4\uFF0C\u5355\u4F4D\u6BEB\u79D2
+        maxWait: 60000
+        #\u6709\u4E24\u4E2A\u542B\u4E49\uFF1A
+        #1) Destroy\u7EBF\u7A0B\u4F1A\u68C0\u6D4B\u8FDE\u63A5\u7684\u95F4\u9694\u65F6\u95F4\uFF0C\u5982\u679C\u8FDE\u63A5\u7A7A\u95F2\u65F6\u95F4\u5927\u4E8E\u7B49\u4E8EminEvictableIdleTimeMillis\u5219\u5173\u95ED\u7269\u7406\u8FDE\u63A5\u3002
+        #2) testWhileIdle\u7684\u5224\u65AD\u4F9D\u636E\uFF0C\u8BE6\u7EC6\u770BtestWhileIdle\u5C5E\u6027\u7684\u8BF4\u660E
+        timeBetweenEvictionRunsMillis: 60000
+        #\u8FDE\u63A5\u4FDD\u6301\u7A7A\u95F2\u800C\u4E0D\u88AB\u9A71\u9010\u7684\u6700\u5C0F\u65F6\u95F4\uFF0C\u5355\u4F4D\u662F\u6BEB\u79D2
+        minEvictableIdleTimeMillis: 300000
+        #\u4F7F\u7528\u8BE5SQL\u8BED\u53E5\u68C0\u67E5\u94FE\u63A5\u662F\u5426\u53EF\u7528\u3002\u5982\u679CvalidationQuery=null\uFF0CtestOnBorrow\u3001testOnReturn\u3001testWhileIdle\u90FD\u4E0D\u4F1A\u8D77\u4F5C\u7528\u3002
+        validationQuery: SELECT 1 FROM DUAL
+        #\u5EFA\u8BAE\u914D\u7F6E\u4E3Atrue\uFF0C\u4E0D\u5F71\u54CD\u6027\u80FD\uFF0C\u5E76\u4E14\u4FDD\u8BC1\u5B89\u5168\u6027\u3002\u7533\u8BF7\u8FDE\u63A5\u7684\u65F6\u5019\u68C0\u6D4B\uFF0C\u5982\u679C\u7A7A\u95F2\u65F6\u95F4\u5927\u4E8EtimeBetweenEvictionRunsMillis\uFF0C\u6267\u884CvalidationQuery\u68C0\u6D4B\u8FDE\u63A5\u662F\u5426\u6709\u6548\u3002
+        testWhileIdle: true
+        #\u7533\u8BF7\u8FDE\u63A5\u65F6\u6267\u884CvalidationQuery\u68C0\u6D4B\u8FDE\u63A5\u662F\u5426\u6709\u6548\uFF0C\u505A\u4E86\u8FD9\u4E2A\u914D\u7F6E\u4F1A\u964D\u4F4E\u6027\u80FD\u3002
+        testOnBorrow: false
+        #\u5F52\u8FD8\u8FDE\u63A5\u65F6\u6267\u884CvalidationQuery\u68C0\u6D4B\u8FDE\u63A5\u662F\u5426\u6709\u6548\uFF0C\u505A\u4E86\u8FD9\u4E2A\u914D\u7F6E\u4F1A\u964D\u4F4E\u6027\u80FD\u3002
+        testOnReturn: false
+        # \u914D\u7F6E\u76D1\u63A7\u7EDF\u8BA1\u62E6\u622A\u7684filters\uFF0C\u53BB\u6389\u540E\u76D1\u63A7\u754C\u9762sql\u65E0\u6CD5\u7EDF\u8BA1\uFF0C'wall'\u7528\u4E8E\u9632\u706B\u5899
+        filters: stat,wall,slf4j
+        # \u901A\u8FC7connectProperties\u5C5E\u6027\u6765\u6253\u5F00mergeSql\u529F\u80FD\uFF1B\u6162SQL\u8BB0\u5F55
+        #connectionProperties.druid.stat.mergeSql: true
+        #connectionProperties.druid.stat.slowSqlMillis: 5000
+        # \u5408\u5E76\u591A\u4E2ADruidDataSource\u7684\u76D1\u63A7\u6570\u636E
+        #useGlobalDataSourceStat: true
+        #default-auto-commit: true \u9ED8\u8BA4
+        #default-auto-commit: false
+#  jta:
+#    atomikos:
+#      datasource:
+#        max-pool-size: 20
+#        borrow-connection-timeout: 60
+#      connectionfactory:
+#        max-pool-size: 20
+#        borrow-connection-timeout: 60
+#    jpa:
+#      hibernate:
+#        ddl-auto: update
+#      show-sql: true
