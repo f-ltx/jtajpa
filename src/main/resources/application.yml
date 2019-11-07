@@ -81,7 +81,8 @@ spring:
       connectionfactory:
         max-pool-size: 20
         borrow-connection-timeout: 60
-    jpa:
-      hibernate:
-        ddl-auto: update
-      show-sql: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
