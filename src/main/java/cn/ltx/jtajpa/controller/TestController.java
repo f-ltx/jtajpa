@@ -14,8 +14,25 @@ public class TestController {
 
     @ResponseBody
     @RequestMapping("/test")
-    public String test(){
-        testService.testJtaAtomikos();
-        return "";
+    public String test() {
+        return testService.testJtaAtomikos();
+    }
+
+    @ResponseBody
+    @RequestMapping("/test1")
+    public String test1(){
+        return testService.test1();
+    }
+
+    @ResponseBody
+    @RequestMapping("/test2")
+    public String test2(){
+        return testService.test2();
+    }
+
+    @ResponseBody
+    @RequestMapping("/query")
+    public String query() {
+        return testService.query();
     }
 }

@@ -3,7 +3,7 @@ spring:
     druid:
       sid:  #\u6570\u636E\u6E901
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/manydatasource1?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8
+        url: jdbc:mysql://localhost:3306/manydatasource1?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&useSSL=true
         username: root
         password: mysqladmin
         #\u521D\u59CB\u5316\u65F6\u5EFA\u7ACB\u7269\u7406\u8FDE\u63A5\u7684\u4E2A\u6570
@@ -39,7 +39,7 @@ spring:
         #default-auto-commit: false
       lee: #\u6570\u636E\u6E902
         driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/manydatasource2?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8
+        url: jdbc:mysql://localhost:3306/manydatasource2?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&useSSL=true
         username: root
         password: mysqladmin
         #\u521D\u59CB\u5316\u65F6\u5EFA\u7ACB\u7269\u7406\u8FDE\u63A5\u7684\u4E2A\u6570

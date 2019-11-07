@@ -8,6 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 @Service
 public class TestService {
@@ -21,12 +25,40 @@ public class TestService {
     public String testJtaAtomikos() {
         Account account = new Account();
         account.setAccountBalance(1111.11f);
-        accountDao.save(account);
+        account = accountDao.save(account);
 
         Expenditure expenditure = new Expenditure();
         expenditure.setMoney(2222.22f);
-        expenditureDao.save(expenditure);
+        expenditure = expenditureDao.save(expenditure);
         int i = 1 / 0;
-        return "done";
+        Map<String, Object> map = new HashMap<>();
+        map.put("account", account);
+        map.put("expenditure", expenditure);
+        return map.toString();
+    }
+
+    public String query() {
+        List<Account> allAccounts = accountDao.findAll();
+        List<Expenditure> allEexpenditures = expenditureDao.findAll();
+        Map<String, Object> map = new HashMap<>();
+        map.put("allAccounts", allAccounts);
+        map.put("allEexpenditures", allEexpenditures);
+        return map.toString();
+    }
+
+    @Transactional
+    public String test1() {
+        Account account = new Account();
+        account.setAccountBalance(1.1f);
+        account = accountDao.save(account);
+        return account.toString();
+    }
+
+    @Transactional
+    public String test2() {
+        Expenditure expenditure = new Expenditure();
+        expenditure.setMoney(2.2f);
+        expenditure = expenditureDao.save(expenditure);
+        return expenditure.toString();
     }
 }
