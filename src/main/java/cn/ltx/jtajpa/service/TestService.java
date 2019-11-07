@@ -26,7 +26,7 @@ public class TestService {
         Expenditure expenditure = new Expenditure();
         expenditure.setMoney(2222.22f);
         expenditureDao.save(expenditure);
-        int i = 1 / 1;
+        int i = 1 / 0;
         return "done";
     }
 }

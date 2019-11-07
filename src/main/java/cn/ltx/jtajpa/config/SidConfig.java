@@ -1,17 +1,15 @@
 package cn.ltx.jtajpa.config;
 
-import com.mysql.cj.jdbc.MysqlXADataSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import com.alibaba.druid.pool.xa.DruidXADataSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jta.atomikos.AtomikosDataSourceBean;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 import javax.sql.DataSource;
@@ -20,53 +18,54 @@ import java.util.HashMap;
 
 @Configuration
 @DependsOn("transactionManager")
-@EnableJpaRepositories(basePackages = {"cn.ltx.jtajpa.model.sid","cn.ltx.jtajpa.dao.sid"}, entityManagerFactoryRef = "sidEntityManager", transactionManagerRef = "transactionManager")
+@EnableJpaRepositories(basePackages = {"cn.ltx.jtajpa.model.sid", "cn.ltx.jtajpa.dao.sid"}, entityManagerFactoryRef = "sidEntityManager", transactionManagerRef = "transactionManager")
 public class SidConfig {
-    @Autowired
-    private JpaVendorAdapter jpaVendorAdapter;
-
-    //sid库
-    @Primary
-    @Bean(name = "sidDataSourceProperties")
-    @Qualifier("sidDataSourceProperties")
-    @ConfigurationProperties(prefix = "spring.datasource.druid.sid")
-    public DataSourceProperties sidDataSourceProperties() {
-        return new DataSourceProperties();
-    }
-
+    @Value("${spring.datasource.druid.sid.url}")
+    private String url;
+    @Value("${spring.datasource.druid.sid.username}")
+    private String username;
+    @Value("${spring.datasource.druid.sid.password}")
+    private String password;
+    @Value("${spring.datasource.druid.sid.initialSize}")
+    private Integer initialSize;
+    @Value("${spring.datasource.druid.sid.minIdle}")
+    private Integer minIdle;
+    @Value("${spring.datasource.druid.sid.maxActive}")
+    private Integer maxActive;
+    @Value("${spring.datasource.druid.sid.filters}")
+    private String filters;
 
     @Primary
     @Bean(name = "sidDataSource", initMethod = "init", destroyMethod = "close")
     @ConfigurationProperties(prefix = "spring.datasource.druid.sid")
     public DataSource sidDataSource() throws SQLException {
-        MysqlXADataSource mysqlXaDataSource = new MysqlXADataSource();
-        mysqlXaDataSource.setUrl(sidDataSourceProperties().getUrl());
-        mysqlXaDataSource.setPinGlobalTxToPhysicalConnection(true);
-        mysqlXaDataSource.setPassword(sidDataSourceProperties().getPassword());
-        mysqlXaDataSource.setUser(sidDataSourceProperties().getUsername());
+        DruidXADataSource druidXADataSource = new DruidXADataSource();
+        druidXADataSource.setUrl(url);
+        druidXADataSource.setUsername(username);
+        druidXADataSource.setPassword(password);
+        druidXADataSource.setMinIdle(minIdle);
+        druidXADataSource.setMaxActive(maxActive);
+        druidXADataSource.setInitialSize(initialSize);
+        druidXADataSource.setFilters(filters);
         AtomikosDataSourceBean xaDataSource = new AtomikosDataSourceBean();
-        xaDataSource.setXaDataSource(mysqlXaDataSource);
         xaDataSource.setUniqueResourceName("sid");
-        xaDataSource.setBorrowConnectionTimeout(60);
-        xaDataSource.setMaxPoolSize(20);
+        xaDataSource.setXaDataSource(druidXADataSource);
         return xaDataSource;
-
     }
 
     @Primary
     @Bean(name = "sidEntityManager")
     @DependsOn("transactionManager")
-    public LocalContainerEntityManagerFactoryBean sidEntityManager() throws Throwable {
-
+    public LocalContainerEntityManagerFactoryBean sidEntityManager(EntityManagerFactoryBuilder builder) throws Throwable {
         HashMap<String, Object> properties = new HashMap<String, Object>();
         properties.put("hibernate.transaction.jta.platform", AtomikosJtaPlatform.class.getName());
         properties.put("javax.persistence.transactionType", "JTA");
-        LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
-        entityManager.setJtaDataSource(sidDataSource());
-        entityManager.setJpaVendorAdapter(jpaVendorAdapter);
-        entityManager.setPackagesToScan("cn.ltx.jtajpa.model.sid");
-        entityManager.setPersistenceUnitName("sidPersistenceUnit");
-        entityManager.setJpaPropertyMap(properties);
-        return entityManager;
+        return builder
+                .dataSource(sidDataSource())
+                .properties(properties)
+                .packages("cn.ltx.jtajpa.model.sid")
+                .persistenceUnit("sidPersistenceUnit")
+                .build();
     }
+
 }
