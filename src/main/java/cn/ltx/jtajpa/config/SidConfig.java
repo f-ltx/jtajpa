@@ -11,6 +11,8 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.Database;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -60,12 +62,24 @@ public class SidConfig {
         HashMap<String, Object> properties = new HashMap<String, Object>();
         properties.put("hibernate.transaction.jta.platform", AtomikosJtaPlatform.class.getName());
         properties.put("javax.persistence.transactionType", "JTA");
-        return builder
-                .dataSource(sidDataSource())
+        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
+
+        HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
+        //显示sql
+        hibernateJpaVendorAdapter.setShowSql(true);
+        //自动生成/更新表
+        hibernateJpaVendorAdapter.setGenerateDdl(true);
+        //设置数据库类型
+        hibernateJpaVendorAdapter.setDatabase(Database.MYSQL);
+
+        LocalContainerEntityManagerFactoryBean sidPersistenceUnit = builder.dataSource(sidDataSource())
                 .properties(properties)
                 .packages("cn.ltx.jtajpa.model.sid")
                 .persistenceUnit("sidPersistenceUnit")
                 .build();
+        sidPersistenceUnit.setJpaVendorAdapter(hibernateJpaVendorAdapter);
+
+        return sidPersistenceUnit;
     }
 
 }

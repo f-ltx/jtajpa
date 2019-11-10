@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.Database;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -57,11 +59,23 @@ public class LeeConfig {
         HashMap<String, Object> properties = new HashMap<String, Object>();
         properties.put("hibernate.transaction.jta.platform", AtomikosJtaPlatform.class.getName());
         properties.put("javax.persistence.transactionType", "JTA");
-        return builder
-                .dataSource(leeDataSource())
+        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
+
+        HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
+        //显示sql
+        hibernateJpaVendorAdapter.setShowSql(true);
+        //自动生成/更新表
+        hibernateJpaVendorAdapter.setGenerateDdl(true);
+        //设置数据库类型
+        hibernateJpaVendorAdapter.setDatabase(Database.MYSQL);
+
+        LocalContainerEntityManagerFactoryBean leePersistenceUnit = builder.dataSource(leeDataSource())
                 .properties(properties)
                 .packages("cn.ltx.jtajpa.model.lee")
                 .persistenceUnit("leePersistenceUnit")
                 .build();
+        leePersistenceUnit.setJpaVendorAdapter(hibernateJpaVendorAdapter);
+
+        return leePersistenceUnit;
     }
 }
