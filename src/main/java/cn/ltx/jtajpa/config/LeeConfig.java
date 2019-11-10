@@ -50,6 +50,11 @@ public class LeeConfig {
         AtomikosDataSourceBean xaDataSource = new AtomikosDataSourceBean();
         xaDataSource.setUniqueResourceName("lee");
         xaDataSource.setXaDataSource(druidXADataSource);
+
+        xaDataSource.setMinPoolSize(5);
+        xaDataSource.setMaxPoolSize(20);
+        xaDataSource.setBorrowConnectionTimeout(60);
+
         return xaDataSource;
     }
 
