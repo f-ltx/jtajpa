@@ -1,9 +1,6 @@
 package cn.ltx.jtajpa.model.lee;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name = "t_expenditure")
 public class Expenditure {
@@ -12,7 +9,8 @@ public class Expenditure {
     private Float money;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "expenditure_seq")
+    @SequenceGenerator(name = "expenditure_seq", initialValue = 1, allocationSize = 1, sequenceName = "EXPENDITURE_SEQUENCE")
     public Integer getId() {
         return id;
     }

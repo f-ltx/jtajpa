@@ -64,7 +64,7 @@ public class LeeConfig {
         HashMap<String, Object> properties = new HashMap<String, Object>();
         properties.put("hibernate.transaction.jta.platform", AtomikosJtaPlatform.class.getName());
         properties.put("javax.persistence.transactionType", "JTA");
-        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
+        properties.put("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
 
         HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
         //显示sql
@@ -72,7 +72,7 @@ public class LeeConfig {
         //自动生成/更新表
         hibernateJpaVendorAdapter.setGenerateDdl(true);
         //设置数据库类型
-        hibernateJpaVendorAdapter.setDatabase(Database.MYSQL);
+        hibernateJpaVendorAdapter.setDatabase(Database.ORACLE);
 
         LocalContainerEntityManagerFactoryBean leePersistenceUnit = builder.dataSource(leeDataSource())
                 .properties(properties)

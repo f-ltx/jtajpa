@@ -5,9 +5,12 @@ import cn.ltx.jtajpa.dao.sid.AccountDao;
 import cn.ltx.jtajpa.model.lee.Expenditure;
 import cn.ltx.jtajpa.model.sid.Account;
 import org.flowable.engine.ProcessEngine;
+import org.flowable.engine.TaskService;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.DeploymentBuilder;
 import org.flowable.engine.runtime.ProcessInstance;
+import org.flowable.task.api.Task;
+import org.flowable.task.api.TaskQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +48,13 @@ public class TestService {
 //        variables.put("assigne","zhangsan");
         ProcessInstance processInstance = processEngine.getRuntimeService().startProcessInstanceByKey("ldmsProcess");
 
+        TaskService taskService = processEngine.getTaskService();
+        TaskQuery taskQuery = taskService.createTaskQuery();
+        taskQuery.taskAssignee("zhangsan");
+        List<Task> list = taskQuery.list();
+        for (Task task : list) {
+            taskService.complete(task.getId());
+        }
 
         int i = 1 / 1;
         Map<String, Object> map = new HashMap<>();
